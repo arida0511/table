@@ -6,8 +6,10 @@ import _ from "lodash";
 import { writable } from "svelte/store";
 export const priceData = writable<PriceUnit[]>([]);
 
-function getUrl(days: 7 | 30 | 90| 180 | 360){
-    return 'https://dashboard-mintscan.s3.ap-northeast-2.amazonaws.com/research/market/7.csv';
+
+export function getUrl(days: number){
+    var url = "https://dashboard-mintscan.s3.ap-northeast-2.amazonaws.com/research/market/" + days + ".csv";
+    return url;
 }
 export interface PriceUnit{
     denom: string;
@@ -17,7 +19,7 @@ export interface PriceUnit{
     dayVolume: number;
 }
 
-export async function updateData(days: 7 | 30 | 90| 180) {
+export async function updateData(days: number) {
     const data = (await axios.get<string>(getUrl(days))).data;
     const prices = _(data.split('\n'))
         .drop(1)
