@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "sample-svelte"
-  }
+    "default": "table-a99fb",
+    "table": "table-a99fb"
+  },
+  "targets": {},
+  "etags": {}
 }
