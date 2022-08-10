@@ -10,7 +10,9 @@
 	let minV: number;
 	let maxV: number;
 	let days = [7, 30, 90, 180, 360];
-	let selected = days[0];
+	let names: string[];
+	let selectedDay = days[0];
+	let selectedName = [];
 	let prices: [number, number][] = [];
 	let path: string | null = '';
 	let eleContainerWidth: number;
@@ -18,7 +20,7 @@
 	let diff: number;
 
 	onMount(() => {
-		updateData(selected);
+		updateData(selectedDay);
 	});
 
 	//데이터 가공하는 곳
@@ -46,11 +48,16 @@
 </script>
 
 <div class="root">
-	<select bind:value={selected} on:change={() => updateData(selected)}>
-		{#each days as day}
-			<option value={day}>{day}</option>
-		{/each}
-	</select>
+	<form>
+		DAYS <select bind:value={selectedDay} on:change={() => updateData(selectedDay)}>
+			{#each days as day}
+				<option value={day}>{day}</option>
+			{/each}
+		</select>
+		&nbsp;&nbsp;&nbsp; NAME
+		<!--<select bind:value={selectedName} on:change={() => updateData(selectedName)} /-->
+	</form>
+	<h1>{selectedDay}&nbsp;&nbsp;&nbsp;{$priceData.length}</h1>
 	<div
 		class="svg-container"
 		style="width:100%;height:500px"
@@ -62,15 +69,13 @@
 		</svg>
 	</div>
 	<!--
-		<select bind:value={selected}>
+		<select bind:value={selectedDay}>
 		{#each urls as url}
 		<option value={url.content}>{url.id}</option>
 		{/each}
 		</select>
 	-->
-	<h1>{$priceData.length}</h1>
-	<h1>{selected}</h1>
-	<div style="overflow: scroll;">
+	<div class="table">
 		<table class="type08">
 			<thead>
 				<tr>
@@ -120,6 +125,27 @@
 		.graph-field {
 			height: 600px;
 		}
+		::-webkit-scrollbar {
+			width: 20px;
+		}
+		::-webkit-scrollbar-track {
+			background-color: #f1f1f1;
+		}
+		::-webkit-scrollbar-thumb {
+			background-color: rgb(204, 204, 204);
+		}
+		::-webkit-scrollbar-thumb:hover {
+			background: #787878;
+		}
+		::-webkit-scrollbar-button:start:decrement,
+		::-webkit-scrollbar-button:end:increment {
+			background-color: #dcdcd1;
+		}
+	}
+
+	.table {
+		height: 700px;
+		overflow: auto;
 	}
 
 	//퍼옴
@@ -132,6 +158,8 @@
 	}
 
 	table.type08 thead th {
+		position: sticky;
+		top: -1px;
 		padding: 10px;
 		font-weight: bold;
 		border-top: 1px solid #ccc;
